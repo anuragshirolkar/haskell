@@ -1,0 +1,5 @@
+Users|UserId|UserId Int|Name String|Score Float
+0|Anurag|1.0
+1|Afif|2.0
+2|Amit|0.0
+3|Abhishek|4.0
