@@ -17,4 +17,4 @@ import Config
 myDisplay = (InWindow "Hello World" (1300, 700) (500, 500))
 
 mainFunc :: IO ()
-mainFunc = play myDisplay white 60 BoidWorld.sample BoidWorld.render (const id) (const (Sim.oneStep (Config 30 100 20 15 650 350)))
+mainFunc = play myDisplay white 60 BoidWorld.sample BoidWorld.render (const id) (const (Sim.oneStep (Config 30 50 20 50 650 350)))
