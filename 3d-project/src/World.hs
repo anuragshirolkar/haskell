@@ -1,15 +1,22 @@
 module World (
-    World (..), sampleWorld, render
+    World (..), sampleWorld, render, handleEvent, moveWorld
 ) where
 
 import Point3
 import Graphics.Gloss.Data.Point
 import Graphics.Gloss.Data.Picture
-import Camera
+import Camera (Camera)
+import qualified Camera as Camera
+import Events (Movement, Action)
+import qualified Events as Events
+import Graphics.Gloss.Interface.IO.Interact
+import Data.Set (Set)
+import qualified Data.Set as Set
 
 data World = World {
-    camera :: Camera,
-    object :: Object
+    worldCamera :: Camera,
+    worldObject :: Object,
+    worldMovements :: Set Movement
 }
 
 data Object = Cube Point3 Float
@@ -31,9 +38,21 @@ renderObject projFn (Cube (x,y,z) l) = Pictures [l200,l210,l211,l201,l020,l120,l
         l112 = Line [p110,p111]
         l012 = Line [p010,p011] 
 
-sampleWorld = World sampleCam (Cube (0,0,0) 100)
+sampleWorld = World Camera.sampleCam (Cube (0,0,0) 100) Set.empty
 
 render :: World -> Picture
-render (World cam cube) = renderObject projFn cube
+render (World cam cube _) = Color white $ renderObject projFn cube
     where
-        projFn = makeImage sampleCam
+        projFn = Camera.makeImage cam
+
+recordMovement :: Action -> World -> World
+recordMovement (Events.Add movement) (World c o movements) = World c o (Set.insert movement movements)
+recordMovement (Events.Remove movement) (World c o movements) = World c o (Set.delete movement movements)
+recordMovement Events.Reset _ = sampleWorld
+recordMovement _ world = world
+
+handleEvent :: Event -> World -> World
+handleEvent event = recordMovement (Events.fromEvent event)
+
+moveWorld :: World -> World
+moveWorld (World cam object movements) = World (Set.foldl Camera.makeMovement cam movements) object movements
