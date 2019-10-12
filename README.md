@@ -1,3 +1,1 @@
-
-
-![](cube-animation.gif)
+Random Haskell projects.
