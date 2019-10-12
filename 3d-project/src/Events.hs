@@ -23,14 +23,14 @@ data Movement =
 data Action = Add Movement | Remove Movement | Reset | NoAction
 
 fromEvent :: Event -> Action
-fromEvent (EventKey (SpecialKey KeyUp) Up _ _) = Add MoveForward
-fromEvent (EventKey (SpecialKey KeyUp) Down _ _) = Remove MoveForward
-fromEvent (EventKey (SpecialKey KeyDown) Up _ _) = Add MoveBackward
-fromEvent (EventKey (SpecialKey KeyDown) Down _ _) = Remove MoveBackward
-fromEvent (EventKey (SpecialKey KeyLeft) Up _ _) = Add MoveLeft
-fromEvent (EventKey (SpecialKey KeyLeft) Down _ _) = Remove MoveLeft
-fromEvent (EventKey (SpecialKey KeyRight) Up _ _) = Add MoveRight
-fromEvent (EventKey (SpecialKey KeyRight) Down _ _) = Remove MoveRight
+fromEvent (EventKey (SpecialKey KeyUp) Down _ _) = Add MoveForward
+fromEvent (EventKey (SpecialKey KeyUp) Up _ _) = Remove MoveForward
+fromEvent (EventKey (SpecialKey KeyDown) Down _ _) = Add MoveBackward
+fromEvent (EventKey (SpecialKey KeyDown) Up _ _) = Remove MoveBackward
+fromEvent (EventKey (SpecialKey KeyLeft) Down _ _) = Add MoveLeft
+fromEvent (EventKey (SpecialKey KeyLeft) Up _ _) = Remove MoveLeft
+fromEvent (EventKey (SpecialKey KeyRight) Down _ _) = Add MoveRight
+fromEvent (EventKey (SpecialKey KeyRight) Up _ _) = Remove MoveRight
 fromEvent (EventKey (Char 'j') Down _ _) = Add MoveDown
 fromEvent (EventKey (Char 'j') Up _ _) = Remove MoveDown
 fromEvent (EventKey (Char 'k') Down _ _) = Add MoveUp

@@ -37,7 +37,7 @@ makeImage (Camera mat) (x,y,z) = (x'/z', y'/z')
         pointMat = Matrix.fromList 4 1 [x, y, z, 1]
         [x',y',z'] = Vector.toList $ Matrix.getCol 1 $ Matrix.multStd perspectiveM (Matrix.multStd mat pointMat)
 
-translateUnit = -10
+translateUnit = 10
 
 makeMovement :: Camera -> Movement -> Camera
 makeMovement cam Events.MoveForward = translate (0,0,translateUnit) cam
