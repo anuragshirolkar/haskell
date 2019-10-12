@@ -1,19 +1,22 @@
 module BoidWorld (
-    BoidWorld (..), render, oneStep, sample
+    BoidWorld (..), render, sample
 ) where
 import Boid (Boid)
 import qualified Boid as Boid
 import Graphics.Gloss.Data.Picture
+import Graphics.Gloss (black)
 
 data BoidWorld = BoidWorld {
-    worldBoids :: [Boid]
+    worldBoids :: [Boid],
+    worldObstacles :: [Point]
 }
 
 render :: BoidWorld -> Picture
-render (BoidWorld boids) = Pictures $ map Boid.render boids
+render (BoidWorld boids obstacles) = Pictures $ (map Boid.render boids) ++ (map renderObstacle obstacles)
 
-oneStep :: Float -> Float -> Float -> BoidWorld -> BoidWorld
-oneStep r mx my (BoidWorld boids) = BoidWorld $ map mapper boids
-    where mapper = Boid.oneStep r mx my boids
+renderObstacle :: Point -> Picture
+renderObstacle (x,y) = translate x y $ color black $ thickCircle 0 10
 
-sample = BoidWorld $ map Boid.sample [0,2..88]
+obs = [(100,100), (-100,-100), (200,-100), (-200, 100), (300, 100), (-300, -100), (400, -100), (-400, 100)]
+
+sample = BoidWorld (map Boid.sample [0,1..89]) obs

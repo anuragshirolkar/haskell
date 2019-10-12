@@ -1,9 +1,10 @@
 module Util (
-    makeColorS, diffV, sumAllV
+    makeColorS, diffV, sumV, avgV, distance, toDeg, toRad
 ) where
 
 import Graphics.Gloss.Data.Color
 import Graphics.Gloss.Data.Point
+import Graphics.Gloss.Data.Vector
 
 import Numeric (readHex)
 
@@ -20,9 +21,17 @@ distance (x1,y1) (x2,y2) = sqrt (dx*dx + dy*dy)
 diffV :: (Float, Float) -> (Float, Float) -> (Float, Float)
 diffV (x1,y1) (x2,y2) = (x1-x2, y1-y2)
 
-sumV :: Point -> Point -> Point
-sumV (x1,y1) (x2, y2) = (x1+x2, y1+y2)
+addV :: Point -> Point -> Point
+addV (x1,y1) (x2, y2) = (x1+x2, y1+y2)
 
-sumAllV :: [Point] -> Point
-sumAllV = foldl sumV (0,0)
+sumV :: [Point] -> Point
+sumV = foldl addV (0,0)
 
+avgV :: [Point] -> Point
+avgV points = mulSV ((/) 1 $ fromIntegral $ length points) $ sumV points
+
+toDeg :: Float -> Float
+toDeg rad = rad/pi*180
+
+toRad :: Float -> Float
+toRad deg = deg/180*pi
