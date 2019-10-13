@@ -26,11 +26,13 @@ dependencies:
 - matrix
 - vector
 - wavefront
+- directory
 
 library:
   source-dirs:
     - src
     - src/3d
+    - src/model
 
 executables:
   3d-project-exe:

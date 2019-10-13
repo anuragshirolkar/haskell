@@ -1,5 +1,5 @@
 module Camera (
-    Camera (..), makeImage, sampleCam, translate, makeMovement
+    Camera (..), makeImage, initCam, translate, makeMovement
 ) where
 
 import Point3
@@ -20,8 +20,8 @@ perspectiveM = Matrix.fromList 3 4 [1000,0,0,0, 0,1000,0,0, 0,0,1,0]
 goBack :: Float -> Camera -> Camera
 goBack dist cam = translate (0,0,(-dist)) cam
 
-sampleCam :: Camera
-sampleCam = goBack 500 $ (Camera (Matrix.identity 4))
+initCam :: Camera
+initCam = goBack 500 $ (Camera (Matrix.identity 4))
 
 makeImage :: Camera -> Point3 -> Point
 makeImage (Camera mat) (x,y,z) = (x'/z', y'/z')
