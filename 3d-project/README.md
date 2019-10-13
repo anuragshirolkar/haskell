@@ -1,3 +1,3 @@
 # 3d-project
 
-![](cube-animation.gif)
+![](teapot-animation.gif)
