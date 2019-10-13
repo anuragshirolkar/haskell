@@ -20,11 +20,8 @@ perspectiveM = Matrix.fromList 3 4 [1000,0,0,0, 0,1000,0,0, 0,0,1,0]
 goBack :: Float -> Camera -> Camera
 goBack dist cam = translate (0,0,(-dist)) cam
 
-goUp :: Float -> Camera -> Camera
-goUp dist cam = translate (0,dist,0) cam
-
 sampleCam :: Camera
-sampleCam = goUp 100 $ goBack 1000 $ (Camera (Matrix.identity 4))
+sampleCam = goBack 500 $ (Camera (Matrix.identity 4))
 
 makeImage :: Camera -> Point3 -> Point
 makeImage (Camera mat) (x,y,z) = (x'/z', y'/z')
