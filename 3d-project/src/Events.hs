@@ -47,5 +47,11 @@ fromEvent (EventKey (Char 's') Up _ _) = Remove MoveDown
 fromEvent (EventKey (Char 'w') Down _ _) = Add MoveUp
 fromEvent (EventKey (Char 'w') Up _ _) = Remove MoveUp
 
+fromEvent (EventKey (Char 'j') Down _ _) = Add TurnDown
+fromEvent (EventKey (Char 'j') Up _ _) = Remove TurnDown
+
+fromEvent (EventKey (Char 'k') Down _ _) = Add TurnUp
+fromEvent (EventKey (Char 'k') Up _ _) = Remove TurnUp
+
 fromEvent (EventKey (Char 'r') Down _ _) = Reset
 fromEvent _ = NoAction

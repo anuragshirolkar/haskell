@@ -19,7 +19,7 @@ grey = light black
 mainFunc :: IO ()
 mainFunc = 
     do
-        obj <- teaPotObj
+        obj <- cityObj
         putStrLn $ show $ Vector.length $ objFaces $ modelShape obj
         let world = initWorld initCam obj
         play myDisplay grey 60 world render (World.handleEvent world) (const World.moveWorld)

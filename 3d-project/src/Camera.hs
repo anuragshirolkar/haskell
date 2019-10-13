@@ -42,6 +42,12 @@ turnHorizontal theta (Camera mat) = Camera $ Matrix.multStd newMat mat
     where
         newMat = Matrix.fromList 4 4 [cos theta,0,sin theta,0, 0,1,0,0, -(sin theta),0,cos theta,0, 0,0,0,1]
 
+-- angle in radians, positive when camera turns up
+turnVertical :: Float -> Camera -> Camera
+turnVertical theta (Camera mat) = Camera $ Matrix.multStd newMat mat
+    where
+        newMat = Matrix.fromList 4 4 [1,0,0,0, 0,cos theta,-(sin theta),0, 0,sin theta,cos theta,0, 0,0,0,1]
+
 
 translateUnit = 10
 turnUnit = 0.02
@@ -55,4 +61,6 @@ makeMovement cam Events.MoveUp = translate (0,translateUnit,0) cam
 makeMovement cam Events.MoveDown = translate (0,-translateUnit,0) cam
 makeMovement cam Events.TurnLeft = turnHorizontal turnUnit cam
 makeMovement cam Events.TurnRight = turnHorizontal (-turnUnit) cam
+makeMovement cam Events.TurnUp = turnVertical turnUnit cam
+makeMovement cam Events.TurnDown = turnVertical (-turnUnit) cam
 makeMovement cam _ = cam
