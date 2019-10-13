@@ -1,6 +1,6 @@
 module Model (
     Model (..),    
-    teaPotObj, cubeObj
+    teaPotObj, cubeObj, cityObj, planeObj
 ) where
 
 import qualified Codec.Wavefront as WF
@@ -22,7 +22,9 @@ readModel filePath scale =
         return $ Model obj scale
 
 teaPotObj = readModel "src/model/teapot.obj" 50
-cubeObj = readModel "src/model/cube.obj"
+cubeObj = readModel "src/model/cube.obj" 1
+cityObj = readModel "src/model/city.obj" 1
+planeObj = readModel "src/model/plane.obj" 100
 
 getObj :: Either String WF.WavefrontOBJ -> WF.WavefrontOBJ
 getObj (Left s) = WF.WavefrontOBJ Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty
