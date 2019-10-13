@@ -1,33 +1,47 @@
 module Model (
-    teaPotObj, testPrintObj, cubeObj, objToPaths
+    Model (..),    
+    teaPotObj, testPrintObj, cubeObj, objToPaths, renderModel
 ) where
 
-import Codec.Wavefront
+import qualified Codec.Wavefront as WF
 import Data.Either
 import qualified Data.Vector as Vector
 import Point3
+import Graphics.Gloss.Data.Picture
+import Graphics.Gloss.Data.Point
 
-teaPotPath = "src/model/teapot.obj"
+data Model = Model {
+    modelShape :: WF.WavefrontOBJ,
+    modelScale :: Float
+}
 
-teaPotObj :: IO WavefrontOBJ
-teaPotObj = fmap getObj $ fromFile teaPotPath
+renderModel :: (Point3 -> Point) -> Model -> Picture
+renderModel projFn (Model obj s) = renderWFObj projFn obj s
 
-cubePath = "src/model/cube.obj"
-cubeObj :: IO WavefrontOBJ
-cubeObj = fmap getObj $ fromFile cubePath
+renderWFObj :: (Point3 -> Point) -> WF.WavefrontOBJ -> Float -> Picture
+renderWFObj projFn obj s = Pictures $ map (Line . map (projFn . mulSV3 s)) $ objToPaths obj
 
-getObj :: Either String WavefrontOBJ -> WavefrontOBJ
-getObj (Left s) = WavefrontOBJ Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty
+readModel :: String -> Float -> IO Model
+readModel filePath scale =
+    do
+        obj <- fmap getObj $ WF.fromFile filePath
+        return $ Model obj scale
+
+teaPotObj = readModel "src/model/teapot.obj" 50
+cubeObj = readModel "src/model/cube.obj"
+
+getObj :: Either String WF.WavefrontOBJ -> WF.WavefrontOBJ
+getObj (Left s) = WF.WavefrontOBJ Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty
 getObj (Right w) = w
 
-testPrintObj :: WavefrontOBJ -> String
-testPrintObj (WavefrontOBJ _ _ _ _ _ faces _) = show $ Vector.length faces
+testPrintObj :: WF.WavefrontOBJ -> String
+testPrintObj (WF.WavefrontOBJ _ _ _ _ _ faces _) = show $ Vector.length faces
 
-faceToPath :: Vector.Vector Location -> Face -> [Point3]
-faceToPath locations (Face i1 i2 i3 is) = map (fromLocation . (Vector.!) locations . flip (-) 1 . faceLocIndex) (i1:i2:i3:is)
+faceToPath :: Vector.Vector WF.Location -> WF.Face -> [Point3]
+faceToPath locations (WF.Face i1 i2 i3 is) = map (fromLocation . (Vector.!) locations . flip (-) 1 . WF.faceLocIndex) (i1:i2:i3:is)
 
-objToPaths :: WavefrontOBJ -> [[Point3]]
+objToPaths :: WF.WavefrontOBJ -> [[Point3]]
 objToPaths obj = paths
     where
-        locations = objLocations obj
-        paths = Vector.toList $ Vector.map (faceToPath locations . elValue) $ objFaces obj
+        locations = WF.objLocations obj
+        paths = Vector.toList $ Vector.map (faceToPath locations . WF.elValue) $ WF.objFaces obj

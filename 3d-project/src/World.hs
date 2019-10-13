@@ -18,23 +18,15 @@ import qualified Data.Vector as Vector
 
 data World = World {
     worldCamera :: Camera,
-    worldObject :: Object,
+    worldObject :: Model,
     worldMovements :: Set Movement
 }
 
-data Object = Wavefront WF.WavefrontOBJ
-
-renderObject :: (Point3 -> Point) -> Object -> Picture
-renderObject projFn (Wavefront obj) = renderWFObj projFn obj
-
-renderWFObj :: (Point3 -> Point) -> WF.WavefrontOBJ -> Picture
-renderWFObj projFn obj = Pictures $ map (Polygon . map projFn) $ objToPaths obj
-
-initWorld :: Camera -> WF.WavefrontOBJ -> World
-initWorld cam obj = World cam (Wavefront obj) Set.empty
+initWorld :: Camera -> Model -> World
+initWorld cam obj = World cam obj Set.empty
 
 render :: World -> Picture
-render (World cam cube _) = Color white $ renderObject projFn cube
+render (World cam obj _) = Color white $ renderModel projFn obj
     where
         projFn = Camera.makeImage cam
 

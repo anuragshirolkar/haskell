@@ -43,8 +43,8 @@ turnHorizontal theta (Camera mat) = Camera $ Matrix.multStd newMat mat
         newMat = Matrix.fromList 4 4 [cos theta,0,sin theta,0, 0,1,0,0, -(sin theta),0,cos theta,0, 0,0,0,1]
 
 
-translateUnit = 5
-turnUnit = 0.01
+translateUnit = 10
+turnUnit = 0.02
 
 makeMovement :: Camera -> Movement -> Camera
 makeMovement cam Events.MoveForward = translate (0,0,translateUnit) cam
