@@ -3,7 +3,14 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: wavefront-0.7.1.3@sha256:c74f7543c6e791b3fd3df4c89a23b77883cbbe08fdb1e8cbf61ac3f3f9826784,1999
+    pantry-tree:
+      size: 1026
+      sha256: cd79d1acb4d7c35fad719ec94eb5845c91164b42d8dddcc78a07aa51159a3a1c
+  original:
+    hackage: wavefront-0.7.1.3@sha256:c74f7543c6e791b3fd3df4c89a23b77883cbbe08fdb1e8cbf61ac3f3f9826784,1999
 snapshots:
 - completed:
     size: 524789
