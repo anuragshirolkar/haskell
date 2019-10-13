@@ -1,6 +1,6 @@
 module Model (
     Model (..),    
-    teaPotObj, testPrintObj, cubeObj, objToPaths, renderModel
+    teaPotObj, cubeObj
 ) where
 
 import qualified Codec.Wavefront as WF
@@ -15,12 +15,6 @@ data Model = Model {
     modelScale :: Float
 }
 
-renderModel :: (Point3 -> Point) -> Model -> Picture
-renderModel projFn (Model obj s) = renderWFObj projFn obj s
-
-renderWFObj :: (Point3 -> Point) -> WF.WavefrontOBJ -> Float -> Picture
-renderWFObj projFn obj s = Pictures $ map (Line . map (projFn . mulSV3 s)) $ objToPaths obj
-
 readModel :: String -> Float -> IO Model
 readModel filePath scale =
     do
@@ -33,15 +27,3 @@ cubeObj = readModel "src/model/cube.obj"
 getObj :: Either String WF.WavefrontOBJ -> WF.WavefrontOBJ
 getObj (Left s) = WF.WavefrontOBJ Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty Vector.empty
 getObj (Right w) = w
-
-testPrintObj :: WF.WavefrontOBJ -> String
-testPrintObj (WF.WavefrontOBJ _ _ _ _ _ faces _) = show $ Vector.length faces
-
-faceToPath :: Vector.Vector WF.Location -> WF.Face -> [Point3]
-faceToPath locations (WF.Face i1 i2 i3 is) = map (fromLocation . (Vector.!) locations . flip (-) 1 . WF.faceLocIndex) (i1:i2:i3:is)
-
-objToPaths :: WF.WavefrontOBJ -> [[Point3]]
-objToPaths obj = paths
-    where
-        locations = WF.objLocations obj
-        paths = Vector.toList $ Vector.map (faceToPath locations . WF.elValue) $ WF.objFaces obj

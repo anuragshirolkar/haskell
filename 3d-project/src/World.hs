@@ -1,5 +1,5 @@
 module World (
-    World (..), initWorld, render, handleEvent, moveWorld
+    World (..), initWorld, handleEvent, moveWorld
 ) where
 
 import Point3
@@ -24,11 +24,6 @@ data World = World {
 
 initWorld :: Camera -> Model -> World
 initWorld cam obj = World cam obj Set.empty
-
-render :: World -> Picture
-render (World cam obj _) = Color white $ renderModel projFn obj
-    where
-        projFn = Camera.makeImage cam
 
 recordMovement :: World -> Action -> World -> World
 recordMovement _ (Events.Add movement) (World c o movements) = World c o (Set.insert movement movements)

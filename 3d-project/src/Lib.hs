@@ -9,6 +9,7 @@ import Model
 import Codec.Wavefront
 import System.Directory
 import Camera (initCam)
+import Renderer
 
 myDisplay = (InWindow "Hello World" (1300, 700) (500, 500))
 
@@ -19,4 +20,4 @@ mainFunc =
     do
         obj <- teaPotObj
         let world = initWorld initCam obj
-        play myDisplay grey 60 world World.render (World.handleEvent world) (const World.moveWorld)
+        play myDisplay grey 60 world render (World.handleEvent world) (const World.moveWorld)
